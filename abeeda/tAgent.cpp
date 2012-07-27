@@ -195,8 +195,8 @@ void tAgent::setupPhenotype(void)
 		if((genome[i]==42)&&(genome[(i+1)%genome.size()]==(255-42)))
         {
 			hmmu=new tHMMU;
-			//hmmu->setupQuick(genome,i);
-			hmmu->setup(genome,i);
+			hmmu->setupQuick(genome,i);
+			//hmmu->setup(genome,i);
 			hmmus.push_back(hmmu);
 		}
         /*

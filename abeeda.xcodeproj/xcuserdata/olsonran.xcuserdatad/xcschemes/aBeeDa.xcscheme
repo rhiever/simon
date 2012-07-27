@@ -34,7 +34,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/olsonran/Documents/experiments/abeeda/work"
+      customWorkingDirectory = "/Users/olsonran/Documents/experiments/simon-says/work"
       buildConfiguration = "Release">
       <BuildableProductRunnable>
          <BuildableReference
@@ -47,19 +47,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-d /Users/olsonran/Desktop/Dropbox/Private/notebooks/coevolution-of-swarming/swarm-sd30-probdeath/ /Users/olsonran/Desktop/Dropbox/Private/notebooks/coevolution-of-swarming/swarm-sd30-probdeath/ -sd 30"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-dd /Users/olsonran/Desktop/Dropbox/Private/notebooks/coevolution-of-swarming/swarm-sd30-nopredconfusion/ -sd 30"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-e lod.csv swarm.genome predator.genome -g 1200 -t 50 -v 50"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-dfp startPredator.genome startPredator.dot"
+            argument = "-e lod.csv gameAgent.genome -g 100000"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

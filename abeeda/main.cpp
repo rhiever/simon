@@ -212,13 +212,13 @@ int main(int argc, char *argv[])
         
         // determine fitness of population
 		gameAgentMaxFitness = 0.0;
-        double swarmAvgFitness = 0.0;
+        double gameAgentAvgFitness = 0.0;
         
 		for(int i = 0; i < populationSize; ++i)
         {
             game->executeGame(gameAgents[i], NULL, false);
             
-            swarmAvgFitness += gameAgents[i]->fitness;
+            gameAgentAvgFitness += gameAgents[i]->fitness;
             
             //gameAgents[i]->fitnesses.push_back(gameAgents[i]->fitness);
             
@@ -229,9 +229,12 @@ int main(int argc, char *argv[])
             }
 		}
         
-        swarmAvgFitness /= (double)populationSize;
+        gameAgentAvgFitness /= (double)populationSize;
 		
-		cout << "generation " << update << ": swarm [" << (int)swarmAvgFitness << " : " << (int)gameAgentMaxFitness << "]" << endl;
+        if (update % 100 == 0)
+        {
+            cout << "generation " << update << ": game agent [" << (int)gameAgentAvgFitness << " : " << (int)gameAgentMaxFitness << "]" << endl;
+        }
         
 		for(int i = 0; i < populationSize; ++i)
 		{
@@ -248,12 +251,9 @@ int main(int argc, char *argv[])
 			GANextGen[i] = offspring;
 		}
         
-        // shuffle the populations so there is a minimal chance of the same predator/prey combo in the next generation
-        random_shuffle(GANextGen.begin(), GANextGen.end());
-        
 		for(int i = 0; i < populationSize; ++i)
         {
-            // retire and replace the swarm agents from the previous generation
+            // retire and replace the game agents from the previous generation
 			gameAgents[i]->retire();
 			gameAgents[i]->nrPointingAtMe--;
 			if(gameAgents[i]->nrPointingAtMe == 0)
@@ -267,7 +267,7 @@ int main(int argc, char *argv[])
         
         if (track_best_brains && update % track_best_brains_frequency == 0)
         {
-            stringstream sss, pss;
+            stringstream sss;
             
             sss << "gameAgent" << update << ".genome";
             

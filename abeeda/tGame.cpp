@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define cPI 3.14159265
+#define numColors   4
 
 // precalculated lookup tables for the game
 /*double cosLookup[360];
@@ -65,13 +65,55 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
     gameAgent->setupPhenotype();
     gameAgent->fitness = 0.0;
     
+    int round = 1;
     bool correctGuess = true;
+    vector<int> colorSequence;
     
     /*       BEGINNING OF SIMULATION LOOP       */
     
-    for(int round = 0; correctGuess == true; ++round)
+    for(round = 1; correctGuess == true; ++round)
     {
+        // Play Simon Says with a fixed number of colors
         
+        // sequentially feed the color sequence into the game agent's sensors
+        // sequence stays the same, except add a new color every round
+        for (int i = 0; i < round; ++i)
+        {
+            // pick new color for this round
+            if ((i + 1) == round)
+            {
+                colorSequence.push_back(rand() % numColors);
+            }
+            
+            // clear the agent's sensors
+            for (int j = 0; j < numColors; ++j)
+            {
+                gameAgent->states[j] = 0;
+            }
+            
+            // activate the color
+            gameAgent->states[colorSequence[i]] = 1;
+            
+            // activate the game agent's brain
+            gameAgent->updateStates();
+        }
+        
+        // check the game agent's guessed sequence
+        for (int i = 0; correctGuess && i < round; ++i)
+        {
+            // activate the game agent's brain
+            gameAgent->updateStates();
+            
+            //                                      node 31                                              node 30
+            int guess = ((gameAgent->states[(maxNodes - 1)] & 1) << 1) + (gameAgent->states[(maxNodes - 2)] & 1);
+            
+            if (guess != colorSequence[i])
+            {
+                correctGuess = false;
+            }
+        }
+        
+        brainFitness += round;
     }
     
     /*       END OF SIMULATION LOOP       */
