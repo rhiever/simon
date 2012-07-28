@@ -110,7 +110,6 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
             // activate the game agent's brain
             gameAgent->updateStates();
             
-            //                                      node 31                                              node 30
             int guess = ((gameAgent->states[(maxNodes - 1)] & 1) << 1) + (gameAgent->states[(maxNodes - 2)] & 1);
             
             if (guess != colorSequence[i])
