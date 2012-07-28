@@ -55,16 +55,6 @@ public:
     string tGame::executeGame(tAgent* swarmAgent, FILE *data_file, bool report);
     tGame();
     ~tGame();
-    double calcDistanceSquared(double fromX, double fromY, double toX, double toY);
-    double calcAngle(double fromX, double fromY, double fromAngle, double toX, double toY);
-    void calcSwarmCenter(double preyX[], double preyY[], bool preyDead[], double& preyCenterX, double& preyCenterY);
-    void recalcPredDistTable(double preyX[], double preyY[], bool preyDead[],
-                             double predX, double predY,
-                             double predDists[swarmSize]);
-    void recalcPredAndPreyDistTable(double preyX[], double preyY[], bool preyDead[],
-                                    double predX, double predY,
-                                    double predDists[swarmSize], double preyDists[swarmSize][swarmSize]);
-    void applyBoundary(double& positionVal);
     double sum(vector<double> values);
     double average(vector<double> values);
     double variance(vector<double> values);

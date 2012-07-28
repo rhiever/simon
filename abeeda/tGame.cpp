@@ -48,6 +48,11 @@ tGame::tGame()
             atan2Lookup[i][j] = atan2(i - 200, j - 200) * 180.0 / cPI;
         }
     }*/
+    
+    /*for (int i = 0; i < 5000; ++i)
+    {
+        colorSequence.push_back(rand() % numColors);
+    }*/
 }
 
 tGame::~tGame() { }
@@ -79,6 +84,7 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
         // sequence stays the same, except add a new color every round
         for (int i = 0; i < round; ++i)
         {
+            gameAgent->resetBrain();
             // pick new color for this round
             if ((i + 1) == round)
             {
@@ -113,7 +119,7 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
             }
         }
         
-        brainFitness += round;
+        brainFitness += 1.0;
     }
     
     /*       END OF SIMULATION LOOP       */

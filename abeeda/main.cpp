@@ -176,15 +176,15 @@ int main(int argc, char *argv[])
     
     if (make_dot)
     {
-        gameAgent->saveToDot(gameDotFileName.c_str(), false);
+        gameAgent->saveToDot(gameDotFileName.c_str());
         exit(0);
     }
     
     // seed the agents
     delete gameAgent;
     gameAgent = new tAgent;
-    gameAgent->setupRandomAgent(5000);
-    //gameAgent->loadAgent("startSwarm.genome");
+    //gameAgent->setupRandomAgent(5000);
+    gameAgent->loadAgent("gameAgent.genome");
     
     // make mutated copies of the start genome to fill up the initial population
 	for(int i = 0; i < populationSize; ++i)
@@ -231,9 +231,9 @@ int main(int argc, char *argv[])
         
         gameAgentAvgFitness /= (double)populationSize;
 		
-        if (update % 100 == 0)
+        if (update % 1000 == 0)
         {
-            cout << "generation " << update << ": game agent [" << (int)gameAgentAvgFitness << " : " << (int)gameAgentMaxFitness << "]" << endl;
+            cout << "generation " << update << ": game agent [" << gameAgentAvgFitness << " : " << gameAgentMaxFitness << "]" << endl;
         }
         
 		for(int i = 0; i < populationSize; ++i)
@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
 	}
 	
     // save the genome file of the lmrca
-	gameAgents[0]->ancestor->ancestor->saveGenome(gameGenomeFileName.c_str());
+	bestGameAgent->saveGenome(gameGenomeFileName.c_str());
     
     // save quantitative stats on the best game agent's LOD
     /*vector<tAgent*> saveLOD;

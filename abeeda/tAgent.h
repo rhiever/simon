@@ -47,7 +47,7 @@ public:
 	
 	tAgent *ancestor;
 	unsigned int nrPointingAtMe;
-	unsigned char states[maxNodes*swarmSize],newStates[maxNodes*swarmSize];
+	unsigned char states[maxNodes],newStates[maxNodes];
 	double fitness,convFitness;
 	vector<double> fitnesses;
 	int food;
@@ -76,7 +76,7 @@ public:
 	void ampUpStartCodons(void);
 	void showBrain(void);
 	void showPhenotype(void);
-	void saveToDot(const char *filename, bool predator);
+	void saveToDot(const char *filename);
 	void saveToDotFullLayout(char *filename);
 	
 	void initialize(int x, int y, int d);
