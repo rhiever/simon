@@ -52,7 +52,7 @@ class tGame{
 public:
     tExperiment theExperiment;
     void loadExperiment(char *filename);
-    string tGame::executeGame(tAgent* swarmAgent, FILE *data_file, bool report);
+    string executeGame(tAgent* swarmAgent, FILE *data_file, bool report);
     tGame();
     ~tGame();
     double sum(vector<double> values);

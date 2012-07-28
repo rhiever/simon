@@ -183,8 +183,8 @@ int main(int argc, char *argv[])
     // seed the agents
     delete gameAgent;
     gameAgent = new tAgent;
-    //gameAgent->setupRandomAgent(5000);
-    gameAgent->loadAgent("gameAgent.genome");
+    gameAgent->setupRandomAgent(5000);
+    //gameAgent->loadAgent("gameAgent.genome");
     
     // make mutated copies of the start genome to fill up the initial population
 	for(int i = 0; i < populationSize; ++i)
