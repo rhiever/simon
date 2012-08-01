@@ -76,7 +76,7 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
     
     /*       BEGINNING OF SIMULATION LOOP       */
     
-    for(round = 1; correctGuess == true; ++round)
+    for(round = 8; round < 9/*correctGuess == true*/; ++round)
     {
         // Play Simon Says with a fixed number of colors
         
@@ -85,11 +85,13 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
         for (int i = 0; i < round; ++i)
         {
             gameAgent->resetBrain();
+            
             // pick new color for this round
-            if ((i + 1) == round)
+            /*if ((i + 1) == round)
             {
                 colorSequence.push_back(rand() % numColors);
-            }
+            }*/
+            colorSequence.push_back(rand() % numColors);
             
             // clear the agent's sensors
             for (int j = 0; j < numColors; ++j)
@@ -104,8 +106,11 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
             gameAgent->updateStates();
         }
         
+        // this update might not be necessary
+        gameAgent->updateStates();
+        
         // check the game agent's guessed sequence
-        for (int i = 0; correctGuess && i < round; ++i)
+        for (int i = 0; /*correctGuess && */i < round; ++i)
         {
             // activate the game agent's brain
             gameAgent->updateStates();
@@ -116,9 +121,13 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
             {
                 correctGuess = false;
             }
+            else
+            {
+                brainFitness += 1.0 / (double)round;
+            }
         }
         
-        brainFitness += 1.0;
+        //brainFitness += 1.0;
     }
     
     /*       END OF SIMULATION LOOP       */
