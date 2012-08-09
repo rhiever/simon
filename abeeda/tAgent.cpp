@@ -134,8 +134,8 @@ void tAgent::inherit(tAgent *from, double mutationRate, int theTime)
 	//double localMutationRate=4.0/from->genome.size();
 	vector<unsigned char> buffer;
 	born=theTime;
-	ancestor=from;
-	from->nrPointingAtMe++;
+	//ancestor=from;
+	//from->nrPointingAtMe++;
 	from->nrOfOffspring++;
 	genome.clear();
 	genome.resize(from->genome.size());
