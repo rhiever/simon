@@ -47,11 +47,11 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-e lod.csv gameAgent.genome -g 20000"
+            argument = "-e lod.csv gameAgent.genome -t 1000 -g 200000"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-df gameAgent.genome gameAgent.dot"
+            argument = "-df gameAgent42000.genome gameAgent.dot"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

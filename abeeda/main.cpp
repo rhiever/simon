@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
     delete gameAgent;
     gameAgent = new tAgent;
     gameAgent->setupRandomAgent(5000);
-    //gameAgent->loadAgent("gameAgent.genome");
+    //gameAgent->loadAgent((char *)"gameAgent.genome");
     
     // make mutated copies of the start genome to fill up the initial population
 	for(int i = 0; i < populationSize; ++i)
@@ -216,11 +216,18 @@ int main(int argc, char *argv[])
         
 		for(int i = 0; i < populationSize; ++i)
         {
-            game->executeGame(gameAgents[i], NULL, false);
+            double gameAgentFitness = 0.0;
+            
+            for (int j = 0; j < 10; ++j)
+            {
+                game->executeGame(gameAgents[i], NULL, false);
+                //gameAgents[i]->fitnesses.push_back(gameAgents[i]->fitness);
+                gameAgentFitness += gameAgents[i]->fitness;
+            }
+            
+            gameAgents[i]->fitness = gameAgentFitness / 10.0;
             
             gameAgentAvgFitness += gameAgents[i]->fitness;
-            
-            //gameAgents[i]->fitnesses.push_back(gameAgents[i]->fitness);
             
             if(gameAgents[i]->fitness > gameAgentMaxFitness)
             {

@@ -25,35 +25,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define numColors   4
-
-// precalculated lookup tables for the game
-/*double cosLookup[360];
-double sinLookup[360];
-double atan2Lookup[400][400];*/
-
-tGame::tGame()
-{
-    // fill lookup tables
-    /*for (int i = 0; i < 360; ++i)
-    {
-        cosLookup[i] = cos((double)i * (cPI / 180.0));
-        sinLookup[i] = sin((double)i * (cPI / 180.0));
-    }
-    
-    for (int i = 0; i < 400; ++i)
-    {
-        for (int j = 0; j < 400; ++j)
-        {
-            atan2Lookup[i][j] = atan2(i - 200, j - 200) * 180.0 / cPI;
-        }
-    }*/
-    
-    /*for (int i = 0; i < 5000; ++i)
-    {
-        colorSequence.push_back(rand() % numColors);
-    }*/
-}
+tGame::tGame() { }
 
 tGame::~tGame() { }
 
@@ -76,24 +48,24 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
     
     /*       BEGINNING OF SIMULATION LOOP       */
     
-    for(round = 8; round < 9/*correctGuess == true*/; ++round)
+    for(round = 1; round < 30 && correctGuess == true; ++round)
     {
         // Play Simon Says with a fixed number of colors
+        
+        gameAgent->resetBrain();
         
         // sequentially feed the color sequence into the game agent's sensors
         // sequence stays the same, except add a new color every round
         for (int i = 0; i < round; ++i)
         {
-            gameAgent->resetBrain();
-            
             // pick new color for this round
-            /*if ((i + 1) == round)
+            if ((i + 1) == round)
             {
                 colorSequence.push_back(rand() % numColors);
-            }*/
-            colorSequence.push_back(rand() % numColors);
+            }
+            //colorSequence.push_back(rand() % numColors);
             
-            // clear the agent's sensors
+            // clear the agent's color sensors
             for (int j = 0; j < numColors; ++j)
             {
                 gameAgent->states[j] = 0;
@@ -104,19 +76,31 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
             
             // activate the game agent's brain
             gameAgent->updateStates();
+            
+            /*int guess = ((gameAgent->states[(maxNodes - 1)] & 1) << 1) + (gameAgent->states[(maxNodes - 2)] & 1);
+            
+            if (guess != colorSequence[i])
+            {
+                correctGuess = false;
+            }
+            else
+            {
+                brainFitness += 1;
+            }*/
         }
         
         // this update might not be necessary
-        gameAgent->updateStates();
+        //gameAgent->updateStates();
         
         // check the game agent's guessed sequence
-        for (int i = 0; /*correctGuess && */i < round; ++i)
+        for (int i = 0; i < round && correctGuess; ++i)
         {
             // activate the game agent's brain
             gameAgent->updateStates();
             
-            int guess = ((gameAgent->states[(maxNodes - 1)] & 1) << 1) + (gameAgent->states[(maxNodes - 2)] & 1);
-            
+            //int guess = ((gameAgent->states[(maxNodes - 1)] & 1) << 1) + (gameAgent->states[(maxNodes - 2)] & 1);
+            int guess = (gameAgent->states[(maxNodes - 1)] & 1);
+
             if (guess != colorSequence[i])
             {
                 correctGuess = false;
@@ -127,6 +111,32 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
             }
         }
         
+        /*bool ins_connected[4];
+        
+        for (int i = 0; i < 4; ++i)
+        {
+            ins_connected[i] = false;
+        }
+        
+        for(int i = 0; i < gameAgent->hmmus.size(); ++i)
+        {
+            for(int j = 0; j < gameAgent->hmmus[i]->ins.size(); ++j)
+            {
+                if (gameAgent->hmmus[i]->ins[j] < 4)
+                {
+                    ins_connected[gameAgent->hmmus[i]->ins[j]] = true;
+                }
+            }
+        }
+        
+        for (int i = 0; i < 4; ++i)
+        {
+            if (ins_connected[i])
+            {
+                brainFitness += 1;
+            }
+        }*/
+        
         //brainFitness += 1.0;
     }
     
@@ -135,9 +145,9 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
     // compute overall fitness
     gameAgent->fitness = brainFitness;
     
-    if(gameAgent->fitness <= 0.0)
+    if(gameAgent->fitness < 0.0)
     {
-        gameAgent->fitness = 1.0;
+        gameAgent->fitness = 0.1;
     }
     
     // output to data file, if provided

@@ -23,6 +23,8 @@
 #define _globalConst_h_included_
 
 #define     randDouble      ((double)rand() / (double)RAND_MAX)
-#define     maxNodes        16
+#define     maxNodes        32
+#define     numColors       2
+#define     numOutputs      1
 
 #endif

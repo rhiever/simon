@@ -81,7 +81,7 @@ void tAgent::setupRandomAgent(int nucleotides)
 }
 void tAgent::loadAgent(char* filename)
 {
-	FILE *f=fopen(filename,"r+t");
+	FILE *f=fopen(filename,"r");
 	int i;
 	genome.clear();
 	while(!(feof(f)))
@@ -89,6 +89,7 @@ void tAgent::loadAgent(char* filename)
 		fscanf(f,"%i	",&i);
 		genome.push_back((unsigned char)(i&255));
 	}
+    fclose(f);
 	//setupPhenotype();
 }
 
@@ -396,11 +397,18 @@ void tAgent::saveToDot(const char *filename)
         }
     }
     
-    print_node[maxNodes - 1] = true;
-    print_node[maxNodes - 2] = true;
+    for (int i = 0; i < numColors; ++i)
+    {
+        print_node[i] = true;
+    }
+    
+    for (int i = maxNodes - 1; i >= (maxNodes - numOutputs); --i)
+    {
+        print_node[i] = true;
+    }
     
     // input layer
-	for(node=0;node<4;node++)
+	for(node=0;node<numColors;node++)
     {
         if(print_node[node])
         {
@@ -409,7 +417,7 @@ void tAgent::saveToDot(const char *filename)
     }
     
     // hidden states
-    for(node=4;node<maxNodes-2;node++)
+    for(node=numColors;node<maxNodes-numOutputs;node++)
     {
         if(print_node[node])
         {
@@ -418,7 +426,7 @@ void tAgent::saveToDot(const char *filename)
     }
     
     // outputs
-	for(node=maxNodes-2;node<maxNodes;node++)
+	for(node=maxNodes-numOutputs;node<maxNodes;node++)
     {
 		fprintf(f,"	%i [shape=circle,style=filled,color=green];\n",node);
     }
@@ -439,7 +447,7 @@ void tAgent::saveToDot(const char *filename)
     // inputs
     fprintf(f,"	{ rank=same; ");
     
-    for(node = 0; node < 4; node++)
+    for(node = 0; node < numColors; node++)
     {
         if(print_node[node])
         {
@@ -452,7 +460,7 @@ void tAgent::saveToDot(const char *filename)
     // hidden states
     fprintf(f,"	{ rank=same; ");
     
-    for(node = 4; node < maxNodes-2; node++)
+    for(node = numColors; node < maxNodes-numOutputs; node++)
     {
         if(print_node[node])
         {
@@ -465,7 +473,7 @@ void tAgent::saveToDot(const char *filename)
     // outputs
     fprintf(f,"	{ rank=same; ");
     
-    for(node = maxNodes-2; node < maxNodes; node++)
+    for(node = maxNodes-numOutputs; node < maxNodes; node++)
     {
         if(print_node[node])
         {
