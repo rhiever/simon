@@ -600,9 +600,10 @@ void tAgent::saveLogicTable(const char *filename)
     fclose(f);
 }
 
+// saves the Markov network brain genome to a text file
 void tAgent::saveGenome(const char *filename)
 {
-    FILE *f=fopen(filename, "w");
+    FILE *f = fopen(filename, "w");
     
 	for (int i = 0, end = (int)genome.size(); i < end; ++i)
     {

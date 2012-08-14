@@ -48,7 +48,7 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
     
     /*       BEGINNING OF SIMULATION LOOP       */
     
-    for(round = 1; round < 30 && correctGuess == true; ++round)
+    for(round = 1; correctGuess && round <= maxRound; ++round)
     {
         // Play Simon Says with a fixed number of colors
         
@@ -59,41 +59,34 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
         for (int i = 0; i < round; ++i)
         {
             // pick new color for this round
-            if ((i + 1) == round)
+            if ( (i + 1) == round )
             {
                 colorSequence.push_back(rand() % numColors);
             }
-            //colorSequence.push_back(rand() % numColors);
-            
-            // clear the agent's color sensors
-            for (int j = 0; j < numColors; ++j)
+
+            // clear the agent's sensors
+            for (int j = 0; j < numInputs; ++j)
             {
                 gameAgent->states[j] = 0;
             }
             
             // activate the color
+            // indexes between [0, numColors]
             gameAgent->states[colorSequence[i]] = 1;
+            
+            // activate the sensor indicating the length of the sequence
+            // indexes between [numColors, numColors + round]
+            gameAgent->states[numColors + round] = 1;
             
             // activate the game agent's brain
             gameAgent->updateStates();
-            
-            /*int guess = ((gameAgent->states[(maxNodes - 1)] & 1) << 1) + (gameAgent->states[(maxNodes - 2)] & 1);
-            
-            if (guess != colorSequence[i])
-            {
-                correctGuess = false;
-            }
-            else
-            {
-                brainFitness += 1;
-            }*/
         }
         
         // this update might not be necessary
         //gameAgent->updateStates();
         
         // check the game agent's guessed sequence
-        for (int i = 0; i < round && correctGuess; ++i)
+        for (int i = 0; correctGuess && i < round; ++i)
         {
             // activate the game agent's brain
             gameAgent->updateStates();
@@ -110,34 +103,6 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
                 brainFitness += 1.0 / (double)round;
             }
         }
-        
-        /*bool ins_connected[4];
-        
-        for (int i = 0; i < 4; ++i)
-        {
-            ins_connected[i] = false;
-        }
-        
-        for(int i = 0; i < gameAgent->hmmus.size(); ++i)
-        {
-            for(int j = 0; j < gameAgent->hmmus[i]->ins.size(); ++j)
-            {
-                if (gameAgent->hmmus[i]->ins[j] < 4)
-                {
-                    ins_connected[gameAgent->hmmus[i]->ins[j]] = true;
-                }
-            }
-        }
-        
-        for (int i = 0; i < 4; ++i)
-        {
-            if (ins_connected[i])
-            {
-                brainFitness += 1;
-            }
-        }*/
-        
-        //brainFitness += 1.0;
     }
     
     /*       END OF SIMULATION LOOP       */
@@ -147,7 +112,7 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
     
     if(gameAgent->fitness < 0.0)
     {
-        gameAgent->fitness = 0.1;
+        gameAgent->fitness = 0.01;
     }
     
     // output to data file, if provided

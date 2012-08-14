@@ -34,7 +34,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/olsonran/Documents/experiments/simon-says/work"
+      customWorkingDirectory = "/Users/olsonran/Documents/experiments/simon/work"
       buildConfiguration = "Release">
       <BuildableProductRunnable>
          <BuildableReference
@@ -47,12 +47,12 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-e lod.csv gameAgent.genome -t 1000 -g 200000"
-            isEnabled = "NO">
+            argument = "-e lod.csv gameAgent.genome -g 1000"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-df gameAgent42000.genome gameAgent.dot"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
