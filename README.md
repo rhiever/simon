@@ -1,4 +1,4 @@
-simon-says
+simon
 ==========
 
-Simon Says memory game
+Simon memory game

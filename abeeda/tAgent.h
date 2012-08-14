@@ -1,7 +1,7 @@
 /*
  * tAgent.h
  *
- * This file is part of the Simon Says project.
+ * This file is part of the Simon Memory Game project.
  *
  * Copyright 2012 Randal S. Olson.
  * 
