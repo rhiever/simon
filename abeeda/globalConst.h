@@ -26,7 +26,7 @@
 #define     maxNodes        32
 #define     numColors       2
 #define     maxRound        10
-#define     numInputs       numColors + maxRound
-#define     numOutputs      1
+#define     numInputs       log2(numColors)
+#define     numOutputs      log2(numColors)
 
 #endif
