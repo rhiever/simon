@@ -90,7 +90,7 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
             }
             else
             {
-                brainFitness += 1.0 / (double)round;
+                brainFitness += 1.0;
             }
             
             // activate the game agent's brain
