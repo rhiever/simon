@@ -25,7 +25,7 @@
 #define     randDouble      ((double)rand() / (double)RAND_MAX)
 #define     maxNodes        32
 #define     numColors       2
-#define     maxRound        10
+#define     maxRound        20
 #define     numInputs       log2(numColors)
 #define     numOutputs      log2(numColors)
 
