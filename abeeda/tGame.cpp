@@ -48,7 +48,7 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
     
     /*       BEGINNING OF SIMULATION LOOP       */
     
-    for(round = 20; correctGuess && round <= maxRound; ++round)
+    for(round = maxRound; correctGuess && round <= maxRound; ++round)
     {
         // Play Simon Says with a fixed number of colors
         
@@ -74,15 +74,15 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
             // activate the game agent's brain
             gameAgent->updateStates();
         }
-        
         // this update might not be necessary
         //gameAgent->updateStates();
-        
         // check the game agent's guessed sequence
         for (int i = 0; correctGuess && i < round; ++i)
         {
+            gameAgent->states[(int)(numInputs+numOutputs)]=1;
+            gameAgent->updateStates();
             //int guess = ((gameAgent->states[(maxNodes - 1)] & 1) << 1) + (gameAgent->states[(maxNodes - 2)] & 1);
-            int guess = (gameAgent->states[(maxNodes - 1)] & 1);
+            int guess = (gameAgent->states[(int)numInputs] & 1);
 
             if (guess != colorSequence[i])
             {
@@ -94,14 +94,14 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
             }
             
             // activate the game agent's brain
-            gameAgent->updateStates();
         }
     }
     
     /*       END OF SIMULATION LOOP       */
     
     // compute overall fitness
-    gameAgent->fitness = brainFitness;
+//    gameAgent->fitness = brainFitness;
+    gameAgent->fitness = pow(1.2,brainFitness);
     
     if(gameAgent->fitness < 0.0)
     {

@@ -238,7 +238,7 @@ int main(int argc, char *argv[])
         
         gameAgentAvgFitness /= (double)populationSize;
 		
-        if (update % 1000 == 0)
+        if (update % 100 == 0)
         {
             cout << "generation " << update << ": game agent [" << gameAgentAvgFitness << " : " << gameAgentMaxFitness << "]" << endl;
         }

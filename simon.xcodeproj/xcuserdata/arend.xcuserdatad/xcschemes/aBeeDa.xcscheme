@@ -15,8 +15,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8464C10D14683D7F00BDA7EB"
                BuildableName = "aBeeDa"
-               BlueprintName = "aBeeDa"
-               ReferencedContainer = "container:aBeeDa.xcodeproj">
+               BlueprintName = "abeeda"
+               ReferencedContainer = "container:simon.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,20 +34,20 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Volumes/KoMoDo/scienceGit/aBeeDa/work"
+      customWorkingDirectory = "/Users/arend/science/simon/work"
       buildConfiguration = "Release">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8464C10D14683D7F00BDA7EB"
             BuildableName = "aBeeDa"
-            BlueprintName = "aBeeDa"
-            ReferencedContainer = "container:aBeeDa.xcodeproj">
+            BlueprintName = "abeeda"
+            ReferencedContainer = "container:simon.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "res.txt lod.txt gen.txt"
+            argument = "-e LOD.csv genome.gen -g 50000"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
@@ -64,8 +64,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8464C10D14683D7F00BDA7EB"
             BuildableName = "aBeeDa"
-            BlueprintName = "aBeeDa"
-            ReferencedContainer = "container:aBeeDa.xcodeproj">
+            BlueprintName = "abeeda"
+            ReferencedContainer = "container:simon.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

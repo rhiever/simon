@@ -79,6 +79,13 @@ void tAgent::setupRandomAgent(int nucleotides)
 	ANN->setup();
 #endif
 }
+
+void tAgent::setupNodeMap(void){
+    int i;
+    for(i=0;i<256;i++)
+        nodeMap[i]=i>>5;
+}
+
 void tAgent::loadAgent(char* filename)
 {
 	FILE *f=fopen(filename,"r");
@@ -125,6 +132,11 @@ void tAgent::ampUpStartCodons(void)
 		for(int k=2;k<20;k++)
 			genome[j+k]=rand()&255;
 	}
+    j=rand()%((int)genome.size()-100);
+    genome[j]=41;
+    genome[j+1]=255-41;
+    genome[j+2]=127;
+    genome[j+3]=127;
 }
 
 void tAgent::inherit(tAgent *from, double mutationRate, int theTime)
@@ -181,8 +193,9 @@ void tAgent::inherit(tAgent *from, double mutationRate, int theTime)
 
 void tAgent::setupPhenotype(void)
 {
-	int i;
+	int i,j;
 	tHMMU *hmmu;
+    this->setupNodeMap();
 	if(hmmus.size()!=0)
     {
 		for(i=0;i<hmmus.size();i++)
@@ -193,6 +206,7 @@ void tAgent::setupPhenotype(void)
 	hmmus.clear();
 	for(i=0;i<genome.size();i++)
     {
+        //regular deterministic gate
 		if((genome[i]==42)&&(genome[(i+1)%genome.size()]==(255-42)))
         {
 			hmmu=new tHMMU;
@@ -201,6 +215,7 @@ void tAgent::setupPhenotype(void)
 			hmmus.push_back(hmmu);
 		}
         /*
+        //regular probablistic gate
 		if((genome[i]==43)&&(genome[(i+1)%genome.size()]==(255-43))){
 			hmmu=new tHMMU;
 			//hmmu->setup(genome,i);
@@ -208,11 +223,19 @@ void tAgent::setupPhenotype(void)
 			hmmus.push_back(hmmu);
 		}
          */
+        //node map modifier gene
+        if((genome[i]==41)&&(genome[(i+1)%genome.size()]==(255-41))){
+            for(j=0;j<(genome[(i+3)%genome.size()]&maxNodes);j++){
+                nodeMap[((genome[(i+2)%genome.size()]&maxNodes)+j)&maxNodes]++;
+            }
+        }
 	}
 }
 void tAgent::setupMegaPhenotype(int howMany)
 {
-	int i,j;
+	int i,j,k;
+    this->setupNodeMap();
+
 	tHMMU *hmmu;
     
 	if(hmmus.size() > 0)
@@ -225,6 +248,11 @@ void tAgent::setupMegaPhenotype(int howMany)
 	hmmus.clear();
 	for(i=0;i<genome.size();i++)
     {
+        if((genome[i]==41)&&(genome[(i+1)%genome.size()]==(255-41))){
+            for(k=0;k<(genome[(i+3)%genome.size()]&maxNodes);k++){
+                nodeMap[((genome[(i+2)%genome.size()]&maxNodes)+k)&maxNodes]++;
+            }
+        }
 		if((genome[i]==42)&&(genome[(i+1)%genome.size()]==(255-42)))
         {
             for(j=0;j<howMany;j++)
@@ -277,7 +305,7 @@ void tAgent::updateStates(void)
 {
 	for(vector<tHMMU*>::iterator it = hmmus.begin(), end = hmmus.end(); it != end; ++it)
     {
-		(*it)->update(&states[0],&newStates[0]);
+		(*it)->update(&states[0],&newStates[0],&nodeMap[0]);
     }
     
 	for(int i=0;i<maxNodes;i++)
@@ -365,7 +393,7 @@ void tAgent::saveLOD(FILE *statsFile,FILE *genomeFile){
 void tAgent::showPhenotype(void)
 {
 	for(int i=0;i<hmmus.size();i++)
-		hmmus[i]->show();
+		hmmus[i]->show(&nodeMap[0]);
 	cout<<"------"<<endl;
 }
 

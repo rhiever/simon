@@ -125,14 +125,14 @@ void tHMMU::setupQuick(vector<unsigned char> &genome, int start){
 	
 }
 
-void tHMMU::update(unsigned char *states, unsigned char *newStates)
+void tHMMU::update(unsigned char *states, unsigned char *newStates,unsigned char *nodeMap)
 {
 	int I=0;
 	int i,j,r;
 #ifdef feedbackON
     unsigned char mod;
     
-	if((nrPos!=0)&&(states[posFBNode]==1))
+	if((nrPos!=0)&&(states[nodeMap[posFBNode]]==1))
     {
 		for(i=0;i<chosenInPos.size();i++)
         {
@@ -144,7 +144,7 @@ void tHMMU::update(unsigned char *states, unsigned char *newStates)
 			}
 		}
 	}
-	if((nrNeg!=0)&&(states[negFBNode]==1))
+	if((nrNeg!=0)&&(states[nodeMap[negFBNode]]==1))
     {
 		for(i=0;i<chosenInNeg.size();i++)
         {
@@ -160,7 +160,7 @@ void tHMMU::update(unsigned char *states, unsigned char *newStates)
     
 	for(vector<int>::iterator it = ins.begin(), end = ins.end(); it != end; ++it)
     {
-		I=(I<<1)+((states[*it])&1);
+		I=(I<<1)+((states[nodeMap[*it]])&1);
     }
     
 	r=1+(rand()%(sums[I]-1));
@@ -174,7 +174,7 @@ void tHMMU::update(unsigned char *states, unsigned char *newStates)
     
 	for(i = 0; i < outs.size(); ++i)
     {
-		newStates[outs[i]] |= (j >> i) & 1;
+		newStates[nodeMap[outs[i]]] |= (j >> i) & 1;
     }
 #ifdef feedbackON
 	chosenInPos.push_back(I);
@@ -200,15 +200,15 @@ void tHMMU::update(unsigned char *states, unsigned char *newStates)
 #endif
 }
 
-void tHMMU::show(void){
+void tHMMU::show(unsigned char *nodeMap){
 	int i,j;
 	cout<<"INS: ";
 	for(i=0;i<ins.size();i++)
-		cout<<(int)ins[i]<<" ";
+		cout<<(int)nodeMap[ins[i]]<<" ";
 	cout<<endl;
 	cout<<"OUTS: ";
 	for(i=0;i<outs.size();i++)
-		cout<<(int)outs[i]<<" ";
+		cout<<(int)nodeMap[outs[i]]<<" ";
 	cout<<endl;
 	for(i=0;i<hmm.size();i++){
 		for(j=0;j<hmm[i].size();j++)
@@ -216,7 +216,7 @@ void tHMMU::show(void){
 		cout<<endl;
 	}
 	cout<<endl;
-	cout<<"posFB: "<<(int)posFBNode<<" negFB: "<<(int)negFBNode<<endl;
+	cout<<"posFB: "<<(int)nodeMap[posFBNode]<<" negFB: "<<(int)nodeMap[negFBNode]<<endl;
 	cout<<"posQue:"<<endl;
 	for(i=0;i<posLevelOfFB.size();i++)
 		cout<<(int)posLevelOfFB[i]<<" ";

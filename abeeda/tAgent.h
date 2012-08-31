@@ -41,6 +41,7 @@ public:
 	vector<tHMMU*> hmmus;
 	vector<unsigned char> genome;
 	vector<tDot> dots;
+    unsigned char nodeMap[256];
 #ifdef useANN
 	tANN *ANN;
 #endif
@@ -65,6 +66,7 @@ public:
 	tAgent();
 	~tAgent();
 	void setupRandomAgent(int nucleotides);
+    virtual void setupNodeMap(void);
 	void loadAgent(char* filename);
 	void loadAgentWithTrailer(char* filename);
 	void setupPhenotype(void);
