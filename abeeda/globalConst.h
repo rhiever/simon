@@ -27,7 +27,7 @@
 
 #define     numColors       2
 #define     maxRound        4
-#define     numInputs       log2(numColors)
-#define     numOutputs      log2(numColors)
+#define     numInputs       (int)log2(numColors)
+#define     numOutputs      (int)log2(numColors)
 
 #endif

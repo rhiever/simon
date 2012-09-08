@@ -14,6 +14,20 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8464C10D14683D7F00BDA7EB"
+               BuildableName = "abeeda"
+               BlueprintName = "abeeda"
+               ReferencedContainer = "container:simon.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8464C10D14683D7F00BDA7EB"
                BuildableName = "aBeeDa"
                BlueprintName = "aBeeDa"
                ReferencedContainer = "container:abeeda.xcodeproj">
@@ -40,14 +54,14 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8464C10D14683D7F00BDA7EB"
-            BuildableName = "aBeeDa"
-            BlueprintName = "aBeeDa"
-            ReferencedContainer = "container:abeeda.xcodeproj">
+            BuildableName = "abeeda"
+            BlueprintName = "abeeda"
+            ReferencedContainer = "container:simon.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-e lod.csv gameAgent.genome -g 1000"
+            argument = "-e lod.csv gameAgent.genome -g 50000"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

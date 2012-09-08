@@ -33,14 +33,14 @@ tGame::~tGame() { }
 string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
 {
     // LOD data variables
-    double brainFitness = 0.0;
+    double agentFitness = 0.0;
     
     // string containing the information to create a video of the simulation
     string reportString = "";
     
     // set up brain
     gameAgent->setupPhenotype();
-    gameAgent->fitness = 0.01;
+    gameAgent->fitness = 0.0;
     
     int round = 1;
     bool correctGuess = true;
@@ -71,18 +71,27 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
                 gameAgent->states[j] = (colorSequence[i] >> j) & 1;
             }
             
+            gameAgent->states[numInputs] = 1;
+            gameAgent->states[numInputs + 1] = 0;
+            
             // activate the game agent's brain
             gameAgent->updateStates();
         }
-        // this update might not be necessary
-        //gameAgent->updateStates();
+        
         // check the game agent's guessed sequence
         for (int i = 0; correctGuess && i < round; ++i)
         {
-            gameAgent->states[(int)(numInputs+numOutputs)]=1;
+            for (int j = 0; j < numInputs; ++j)
+            {
+                gameAgent->states[j] = 0;
+            }
+            gameAgent->states[numInputs] = 0;
+            gameAgent->states[numInputs + 1] = 1;
+            
             gameAgent->updateStates();
+            
             //int guess = ((gameAgent->states[(maxNodes - 1)] & 1) << 1) + (gameAgent->states[(maxNodes - 2)] & 1);
-            int guess = (gameAgent->states[(int)numInputs] & 1);
+            int guess = (gameAgent->states[numInputs + 2] & 1);
 
             if (guess != colorSequence[i])
             {
@@ -90,18 +99,16 @@ string tGame::executeGame(tAgent* gameAgent, FILE *data_file, bool report)
             }
             else
             {
-                brainFitness += 1.0;
+                agentFitness += 1.0;
             }
-            
-            // activate the game agent's brain
         }
     }
     
     /*       END OF SIMULATION LOOP       */
     
     // compute overall fitness
-//    gameAgent->fitness = brainFitness;
-    gameAgent->fitness = pow(1.2,brainFitness);
+    //gameAgent->fitness = brainFitness;
+    gameAgent->fitness = pow(1.2, agentFitness);
     
     if(gameAgent->fitness < 0.0)
     {
