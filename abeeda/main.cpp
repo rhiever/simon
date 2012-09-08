@@ -67,7 +67,7 @@ double  perSitePointMutationRate    = 0.005;
 double  duplicationMutationRate     = 0.05;
 double  deletionMutationRate        = 0.02;
 int     populationSize              = 100;
-int     totalGenerations            = 252;
+int     totalGenerations            = 10002;
 tGame   *game                       = NULL;
 
 bool    track_best_brains           = false;
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
             srand(atoi(argv[i]));
         }
         
-        // -g [int]: set generations
+        // -g [int]: set generations (default: 10000)
         else if (strcmp(argv[i], "-g") == 0 && (i + 1) < argc)
         {
             ++i;
@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
             }
         }
         
-        // -mr [double]: set per-site point mutation rate
+        // -mr [double]: set per-site point mutation rate (default: 0.005)
         else if (strcmp(argv[i], "-mr") == 0 && (i + 1) < argc)
         {
             ++i;
@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
             }
         }
         
-        // -dur [double]: set duplication mutation rate
+        // -dur [double]: set duplication mutation rate (default: 0.05)
         else if (strcmp(argv[i], "-dur") == 0 && (i + 1) < argc)
         {
             ++i;
@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
             }
         }
         
-        // -der [double]: set deletion mutation rate
+        // -der [double]: set deletion mutation rate (default: 0.02)
         else if (strcmp(argv[i], "-der") == 0 && (i + 1) < argc)
         {
             ++i;
