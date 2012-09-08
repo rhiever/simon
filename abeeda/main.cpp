@@ -238,7 +238,7 @@ int main(int argc, char *argv[])
         
         gameAgentAvgFitness /= (double)populationSize;
 		
-        if (update % 100 == 0)
+        if (update % 1000 == 0)
         {
             cout << "generation " << update << ": game agent [" << gameAgentAvgFitness << " : " << gameAgentMaxFitness << "]" << endl;
         }
@@ -283,7 +283,7 @@ int main(int argc, char *argv[])
 	}
 	
     // save the genome file of the lmrca
-	bestGameAgent->saveGenome(gameGenomeFileName.c_str());
+	gameAgents[0]->ancestor->ancestor->saveGenome(gameGenomeFileName.c_str());
     
     // save quantitative stats on the best game agent's LOD
     /*vector<tAgent*> saveLOD;

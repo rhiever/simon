@@ -80,10 +80,12 @@ void tAgent::setupRandomAgent(int nucleotides)
 #endif
 }
 
-void tAgent::setupNodeMap(void){
-    int i;
-    for(i=0;i<256;i++)
-        nodeMap[i]=i>>5;
+void tAgent::setupNodeMap(void)
+{
+    for(int i = 0; i < 256; ++i)
+    {
+        nodeMap[i] = 0;
+    }
 }
 
 void tAgent::loadAgent(char* filename)
@@ -122,9 +124,15 @@ void tAgent::loadAgentWithTrailer(char* filename)
 void tAgent::ampUpStartCodons(void)
 {
 	int i,j;
-	for(i=0;i<genome.size();i++)
-		genome[i]=rand()&255;
-	for(i=0;i<4;i++)
+    
+    // randomize genome
+	for(i = 0; i < genome.size(); ++i)
+    {
+		genome[i] = rand() & 255;
+    }
+    
+    // add start gates
+	for(i = 0; i < 4; ++i)
 	{
 		j=rand()%((int)genome.size()-100);
 		genome[j]=42;
@@ -132,11 +140,17 @@ void tAgent::ampUpStartCodons(void)
 		for(int k=2;k<20;k++)
 			genome[j+k]=rand()&255;
 	}
-    j=rand()%((int)genome.size()-100);
-    genome[j]=41;
-    genome[j+1]=255-41;
-    genome[j+2]=127;
-    genome[j+3]=127;
+    
+    // add start state map modifiers
+    for (i = 0; i < numInputs + numOutputs + 2; ++i)
+    {
+        j=rand()%((int)genome.size()-10);
+        genome[j]=41;
+        genome[j+1]=255-41;
+        genome[j+2]=(int)(((double)i / (double)(numInputs + numOutputs + 2)) * maxNodes);
+        genome[j+3]=(int)(double)maxNodes / (double)(numInputs + numOutputs + 2);
+        genome[j+4]=i;
+    }
 }
 
 void tAgent::inherit(tAgent *from, double mutationRate, int theTime)
@@ -204,7 +218,7 @@ void tAgent::setupPhenotype(void)
         }
     }
 	hmmus.clear();
-	for(i=0;i<genome.size();i++)
+	for(i=0;i<genome.size();++i)
     {
         //regular deterministic gate
 		if((genome[i]==42)&&(genome[(i+1)%genome.size()]==(255-42)))
@@ -224,13 +238,21 @@ void tAgent::setupPhenotype(void)
 		}
          */
         //node map modifier gene
-        if((genome[i]==41)&&(genome[(i+1)%genome.size()]==(255-41))){
-            for(j=0;j<(genome[(i+3)%genome.size()]&maxNodes);j++){
-                nodeMap[((genome[(i+2)%genome.size()]&maxNodes)+j)&maxNodes]++;
+        if((genome[i] == 41) && (genome[(i + 1) % genome.size()] == (255 - 41)))
+        {
+            int baseIndex = genome[(i + 2) % genome.size()];
+            int lengthModifier = genome[(i + 3) % genome.size()];
+            int addVal = genome[(i + 4) % genome.size()];
+            
+            for(j = 0; j < lengthModifier; ++j)
+            {
+                int index = (baseIndex + j) % maxNodes;
+                nodeMap[index] = (nodeMap[index] + addVal) % maxNodes;
             }
         }
 	}
 }
+
 void tAgent::setupMegaPhenotype(int howMany)
 {
 	int i,j,k;
