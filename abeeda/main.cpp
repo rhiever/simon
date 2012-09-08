@@ -63,7 +63,9 @@ void    doBroadcast(string data);
 using namespace std;
 
 //double  replacementRate             = 0.1;
-double  perSiteMutationRate         = 0.005;
+double  perSitePointMutationRate    = 0.005;
+double  duplicationMutationRate     = 0.05;
+double  deletionMutationRate        = 0.02;
 int     populationSize              = 100;
 int     totalGenerations            = 252;
 tGame   *game                       = NULL;
@@ -123,6 +125,63 @@ int main(int argc, char *argv[])
             if (totalGenerations < 3)
             {
                 cerr << "minimum number of generations permitted is 3." << endl;
+                exit(0);
+            }
+        }
+        
+        // -mr [double]: set per-site point mutation rate
+        else if (strcmp(argv[i], "-mr") == 0 && (i + 1) < argc)
+        {
+            ++i;
+            
+            perSitePointMutationRate = atof(argv[i]);
+            
+            if (perSitePointMutationRate < 0)
+            {
+                cerr << "minimum per-site point mutation rate permitted is 0.0." << endl;
+                exit(0);
+            }
+            else if (perSitePointMutationRate > 1)
+            {
+                cerr << "maximum per-site point mutation rate permitted is 1.0." << endl;
+                exit(0);
+            }
+        }
+        
+        // -dur [double]: set duplication mutation rate
+        else if (strcmp(argv[i], "-dur") == 0 && (i + 1) < argc)
+        {
+            ++i;
+            
+            duplicationMutationRate = atof(argv[i]);
+            
+            if (duplicationMutationRate < 0)
+            {
+                cerr << "minimum duplication mutation rate permitted is 0.0." << endl;
+                exit(0);
+            }
+            else if (duplicationMutationRate > 1)
+            {
+                cerr << "maximum duplication mutation rate permitted is 1.0." << endl;
+                exit(0);
+            }
+        }
+        
+        // -der [double]: set deletion mutation rate
+        else if (strcmp(argv[i], "-der") == 0 && (i + 1) < argc)
+        {
+            ++i;
+            
+            deletionMutationRate = atof(argv[i]);
+            
+            if (deletionMutationRate < 0)
+            {
+                cerr << "minimum deletion mutation rate permitted is 0.0." << endl;
+                exit(0);
+            }
+            else if (deletionMutationRate > 1)
+            {
+                cerr << "maximum deletion mutation rate permitted is 1.0." << endl;
                 exit(0);
             }
         }
@@ -190,7 +249,7 @@ int main(int argc, char *argv[])
 	for(int i = 0; i < populationSize; ++i)
     {
 		gameAgents[i] = new tAgent;
-		gameAgents[i]->inherit(gameAgent, 0.01, 1);
+		gameAgents[i]->inherit(gameAgent, 0.01, duplicationMutationRate, deletionMutationRate, 0);
     }
     
 	GANextGen.resize(populationSize);
@@ -254,7 +313,7 @@ int main(int argc, char *argv[])
                 j = rand() % populationSize;
             } while((j == i) || (randDouble > (gameAgents[j]->fitness / gameAgentMaxFitness)));
             
-			offspring->inherit(gameAgents[j], perSiteMutationRate, update);
+			offspring->inherit(gameAgents[j], perSitePointMutationRate, duplicationMutationRate, deletionMutationRate, update);
 			GANextGen[i] = offspring;
 		}
         

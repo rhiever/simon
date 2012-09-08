@@ -153,7 +153,7 @@ void tAgent::ampUpStartCodons(void)
     }
 }
 
-void tAgent::inherit(tAgent *from, double mutationRate, int theTime)
+void tAgent::inherit(tAgent *from, double mutationRate, double duplicationRate, double deletionRate, int theTime)
 {
 	int nucleotides=(int)from->genome.size();
 	int i,s,o,w;
@@ -177,28 +177,25 @@ void tAgent::inherit(tAgent *from, double mutationRate, int theTime)
         }
     }
     
-    if (mutationRate != 0.0)
+    if((((double)rand()/(double)RAND_MAX)<duplicationRate)&&(genome.size()<20000))
     {
-        if((((double)rand()/(double)RAND_MAX)<0.05)&&(genome.size()<20000))
-        {
-            //duplication
-            w=15+rand()&511;
-            s=rand()%((int)genome.size()-w);
-            o=rand()%(int)genome.size();
-            buffer.clear();
-            buffer.insert(buffer.begin(),genome.begin()+s,genome.begin()+s+w);
-            genome.insert(genome.begin()+o,buffer.begin(),buffer.end());
-        }
-        if((((double)rand()/(double)RAND_MAX)<0.02)&&(genome.size()>1000))
-        {
-            //deletion
-            w=15+rand()&511;
-            s=rand()%((int)genome.size()-w);
-            genome.erase(genome.begin()+s,genome.begin()+s+w);
-        }
+        //duplication
+        w=15+rand()&511;
+        s=rand()%((int)genome.size()-w);
+        o=rand()%(int)genome.size();
+        buffer.clear();
+        buffer.insert(buffer.begin(),genome.begin()+s,genome.begin()+s+w);
+        genome.insert(genome.begin()+o,buffer.begin(),buffer.end());
+    }
+    if((((double)rand()/(double)RAND_MAX)<deletionRate)&&(genome.size()>1000))
+    {
+        //deletion
+        w=15+rand()&511;
+        s=rand()%((int)genome.size()-w);
+        genome.erase(genome.begin()+s,genome.begin()+s+w);
     }
 
-	//setupPhenotype();
+	setupPhenotype();
 	fitness=0.0;
 #ifdef useANN
 	ANN->inherit(ancestor->ANN,mutationRate);
